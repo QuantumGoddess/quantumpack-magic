@@ -16,10 +16,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"quantumgoddess.magic.ExampleMod"
+			"quantumgoddess.magic.QuantumMagicMod"
 		],
 		"client": [
-			"quantumgoddess.magic.ExampleModClient"
+			"quantumgoddess.magic.QuantumMagicModClient"
 		]
 	},
 	"mixins": [
