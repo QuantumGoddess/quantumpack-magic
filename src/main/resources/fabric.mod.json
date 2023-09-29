@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "quantums-magic-mod",
+	"id": "quantumpack-magic",
 	"version": "${version}",
 	"name": "Quantum's Magic Mod",
 	"description": "This is an example description! Tell everyone what your mod is about!",
@@ -25,7 +25,7 @@
 	"mixins": [
 		"quantums-magic-mod.mixins.json",
 		{
-			"config": "quantums-magic-mod.client.mixins.json",
+			"config": "quantumpack-magic.client.mixins.json",
 			"environment": "client"
 		}
 	],

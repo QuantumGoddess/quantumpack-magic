@@ -10,7 +10,7 @@ public class MagicEntityAttributes {
     public static final EntityAttribute GENERIC_MAX_MANA = new ClampedEntityAttribute("attribute.name.generic.max_mana", 20.0, 1.0, 1024.0).setTracked(true);
    
     public static void registerAll() {
-        Registry.register(Registries.ATTRIBUTE, new Identifier("quantums-magic-mod", "generic.max_mana"), GENERIC_MAX_MANA);
+        Registry.register(Registries.ATTRIBUTE, new Identifier("quantumpack-magic", "generic.max_mana"), GENERIC_MAX_MANA);
     }
 }
 
