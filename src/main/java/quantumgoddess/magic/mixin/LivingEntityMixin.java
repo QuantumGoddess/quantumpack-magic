@@ -88,7 +88,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityMi
         }
     }
 
-    protected void useMana(float amount) {
+    public void useMana(float amount) {
         if (amount == 0.0f) {
             return;
         }
