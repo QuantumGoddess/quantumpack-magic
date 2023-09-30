@@ -4,12 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import quantumgoddess.magic.entity.attribute.MagicEntityAttributes;
-import quantumgoddess.magic.item.WandItem;
+import quantumgoddess.magic.item.Items;
 
 public class QuantumMagicMod implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -26,6 +25,6 @@ public class QuantumMagicMod implements ModInitializer {
 		LOGGER.info("Hello Fabric world!");
 		MagicEntityAttributes.registerAll();
 
-		Registry.register(Registries.ITEM, new Identifier("quantumpack-magic", "wand"), new WandItem(new FabricItemSettings()));
+		Registry.register(Registries.ITEM, new Identifier("quantumpack-magic", "wand"), Items.BasicFireWand);
 	}
 }
