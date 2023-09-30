@@ -19,9 +19,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import quantumgoddess.magic.entity.attribute.MagicEntityAttributes;
+import quantumgoddess.magic.mixinhelper.LivingEntityMixinInterface;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity{
+public abstract class LivingEntityMixin extends Entity implements LivingEntityMixinInterface{
 
     private static final TrackedData<Float> MANA = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.FLOAT);
     public final int defaultMaxMana =  20;
