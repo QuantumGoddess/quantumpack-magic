@@ -12,7 +12,7 @@
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/quantums-magic-mod/icon.png",
+	"icon": "assets/quantumpack-magic/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
@@ -23,7 +23,7 @@
 		]
 	},
 	"mixins": [
-		"quantums-magic-mod.mixins.json",
+		"quantumpack-magic.mixins.json",
 		{
 			"config": "quantumpack-magic.client.mixins.json",
 			"environment": "client"
