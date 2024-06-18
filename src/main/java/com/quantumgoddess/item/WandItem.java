@@ -3,6 +3,7 @@ package com.quantumgoddess.item;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
@@ -11,13 +12,18 @@ import org.joml.Vector3f;
 
 import com.google.common.collect.Lists;
 import com.quantumgoddess.component.ModDataComponentTypes;
+import com.quantumgoddess.component.ModEnchantmentEffectComponentTypes;
 import com.quantumgoddess.component.type.WandComponent;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.component.type.ChargedProjectilesComponent;
+import net.minecraft.data.server.tag.vanilla.VanillaEnchantmentTagProvider;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,6 +37,9 @@ import net.minecraft.item.Items;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -42,6 +51,7 @@ import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.MathHelper;
@@ -152,12 +162,18 @@ public class WandItem extends RangedWeaponItem {
         return (new Vector3f(vector3f)).rotateAxis(yaw * 0.017453292F, vector3f3.x, vector3f3.y, vector3f3.z);
     }
 
+    @Override
     protected ProjectileEntity createArrowEntity(World world, LivingEntity shooter, ItemStack weaponStack,
             ItemStack projectileStack, boolean critical) {
-        if (projectileStack.isOf(Items.FIREWORK_ROCKET)) {
+
+        RegistryKey<Enchantment> enchantment = weaponStack.getEnchantments().getEnchantmentEntries().stream().filter(entry -> entry.getKey().isIn(EnchantmentTags.CURSE)).findFirst().get().getKey().getKey().orElse(null);
+
+        if (enchantment == Enchantments.BINDING_CURSE) {
             return new FireworkRocketEntity(world, projectileStack, shooter, shooter.getX(),
                     shooter.getEyeY() - 0.15000000596046448, shooter.getZ(), true);
-        } else {
+        }
+
+        else if (enchantment == Enchantments.VANISHING_CURSE) {
             ProjectileEntity projectileEntity = super.createArrowEntity(world, shooter, weaponStack, projectileStack,
                     critical);
             if (projectileEntity instanceof PersistentProjectileEntity) {
@@ -167,6 +183,11 @@ public class WandItem extends RangedWeaponItem {
 
             return projectileEntity;
         }
+
+        else {
+            return null;
+        }
+
     }
 
     protected int getWeaponStackDamage(ItemStack projectile) {
