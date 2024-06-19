@@ -4,9 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.quantumgoddess.component.ModEnchantmentEffectComponentTypes;
+import com.quantumgoddess.enchantment.effect.entity.LoadProjectileSpellEnchantmentEffect;
 import com.quantumgoddess.item.ModItems;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
 
 public class ExampleMod implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -21,7 +25,7 @@ public class ExampleMod implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
-
+		Registry.register(Registries.ENCHANTMENT_ENTITY_EFFECT_TYPE, Identifier.of("quantummagic", "projectile_spell"), LoadProjectileSpellEnchantmentEffect.CODEC);
 		LOGGER.info("Hello Fabric world!");
 	}
 }
