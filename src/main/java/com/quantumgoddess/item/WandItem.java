@@ -3,7 +3,6 @@ package com.quantumgoddess.item;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
@@ -12,15 +11,12 @@ import org.joml.Vector3f;
 
 import com.google.common.collect.Lists;
 import com.quantumgoddess.component.ModDataComponentTypes;
-import com.quantumgoddess.component.ModEnchantmentEffectComponentTypes;
 import com.quantumgoddess.component.type.WandComponent;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.component.type.ChargedProjectilesComponent;
-import net.minecraft.data.server.tag.vanilla.VanillaEnchantmentTagProvider;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -38,7 +34,6 @@ import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.ScreenTexts;
@@ -51,7 +46,6 @@ import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.MathHelper;
@@ -89,6 +83,7 @@ public class WandItem extends RangedWeaponItem {
     }
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        super.use(world, user, hand);
         ItemStack itemStack = user.getStackInHand(hand);
         ChargedProjectilesComponent chargedProjectilesComponent = (ChargedProjectilesComponent) itemStack
                 .get(DataComponentTypes.CHARGED_PROJECTILES);
@@ -227,7 +222,6 @@ public class WandItem extends RangedWeaponItem {
             LoadingSounds loadingSounds = this.getLoadingSounds(stack);
             LivingEntity user2 = (LivingEntity) user;
             int i = getRechargeTime(stack, user2) - remainingChargeTicks;
-            System.out.println(remainingChargeTicks);
             float f = getRechargeProgress(i, stack, user2);
             if (f < 0.2F) {
                 this.charged = false;
