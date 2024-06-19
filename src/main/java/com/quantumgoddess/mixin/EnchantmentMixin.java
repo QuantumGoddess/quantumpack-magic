@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import com.quantumgoddess.access.EnchantmentMixinInterface;
 import com.quantumgoddess.component.ModEnchantmentEffectComponentTypes;
 
-import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentEffectContext;
 import net.minecraft.entity.EquipmentSlot;
