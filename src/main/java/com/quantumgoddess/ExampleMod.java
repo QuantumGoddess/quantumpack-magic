@@ -3,6 +3,7 @@ package com.quantumgoddess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.quantumgoddess.component.ModEnchantmentEffectComponentTypes;
 import com.quantumgoddess.item.ModItems;
 
 import net.fabricmc.api.ModInitializer;
@@ -13,6 +14,7 @@ public class ExampleMod implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger("modid");
 	public static ModItems ITEMS = new ModItems();
+	public static ModEnchantmentEffectComponentTypes ENCHANTMENT_EFFECT_COMPONENT_TYPES = new ModEnchantmentEffectComponentTypes();
 
 	@Override
 	public void onInitialize() {

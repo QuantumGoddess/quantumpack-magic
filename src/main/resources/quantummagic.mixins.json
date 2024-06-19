@@ -2,7 +2,7 @@
   "required": true,
   "package": "com.quantumgoddess.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": ["EnchantmentInvoker", "EnchantmentMixin", "ItemMixin"],
   "injectors": {
     "defaultRequire": 1
   }
