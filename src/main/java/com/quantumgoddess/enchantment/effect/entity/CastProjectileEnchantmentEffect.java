@@ -9,7 +9,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.enchantment.EnchantmentEffectContext;
-import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -25,37 +24,23 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 
-public record LoadProjectileSpellEnchantmentEffect(RegistryEntryList<EntityType<?>> entityTypes) implements EnchantmentEntityEffect {
+public record CastProjectileEnchantmentEffect(RegistryEntryList<EntityType<?>> entityTypes) implements EnchantmentSpellEffect {
 
-    public static final MapCodec<LoadProjectileSpellEnchantmentEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(((MapCodec<RegistryEntryList<EntityType<?>>>) RegistryCodecs.entryList(RegistryKeys.ENTITY_TYPE).fieldOf("entity")).forGetter(LoadProjectileSpellEnchantmentEffect::entityTypes)).apply(instance, LoadProjectileSpellEnchantmentEffect::new));
+    public static final MapCodec<CastProjectileEnchantmentEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(((MapCodec<RegistryEntryList<EntityType<?>>>) RegistryCodecs.entryList(RegistryKeys.ENTITY_TYPE).fieldOf("entity")).forGetter(CastProjectileEnchantmentEffect::entityTypes)).apply(instance, CastProjectileEnchantmentEffect::new));
 
     @Override
-    public void apply(ServerWorld world, int level, EnchantmentEffectContext context, Entity user, Vec3d pos) {
-
-        BlockPos blockPos = BlockPos.ofFloored(pos);
-        if (!World.isValid(blockPos)) {
-            return;
-        }
+    public void castSpell(ServerWorld world, int level, EnchantmentEffectContext context, Entity user, Vec3d pos) {
         Optional<RegistryEntry<EntityType<?>>> optional = this.entityTypes().getRandom(world.getRandom());
         if (optional.isEmpty()) {
             return;
         }
-        ProjectileEntity projectileEntity = null;
+        EntityType<?> projectileType = optional.get().value();
         LivingEntity shooter = context.owner();
         ItemStack wandStack = shooter.getMainHandStack();
-        EntityType<?> entityType = optional.get().value();
 
-        if (entityType == EntityType.FIREWORK_ROCKET) {
-            projectileEntity = new FireworkRocketEntity(world, wandStack, shooter,
-                    shooter.getX(), shooter.getEyeY() - (double) 0.15f, shooter.getZ(), true);
-        } else if (entityType == EntityType.ARROW) {
-            projectileEntity = new ArrowEntity(world, shooter, wandStack.copyWithCount(1), wandStack);
-        }
-
+        ProjectileEntity projectileEntity = getProjectileEntity(projectileType, world, shooter, wandStack);
         if (projectileEntity == null) {
             return;
         }
@@ -76,7 +61,18 @@ public record LoadProjectileSpellEnchantmentEffect(RegistryEntryList<EntityType<
         world.spawnEntity(projectileEntity);
     }
 
-    public MapCodec<LoadProjectileSpellEnchantmentEffect> getCodec() {
+    public ProjectileEntity getProjectileEntity(EntityType<?> projectileType, ServerWorld world, LivingEntity shooter, ItemStack fromStack) {
+        if (projectileType == EntityType.FIREWORK_ROCKET) {
+            return new FireworkRocketEntity(world, fromStack, shooter,
+                    shooter.getX(), shooter.getEyeY() - (double) 0.15f, shooter.getZ(), true);
+
+        } else if (projectileType == EntityType.ARROW) {
+            return new ArrowEntity(world, shooter, fromStack.copyWithCount(1), fromStack);
+        }
+        return null;
+    }
+
+    public MapCodec<CastProjectileEnchantmentEffect> getCodec() {
         return CODEC;
     }
 }
